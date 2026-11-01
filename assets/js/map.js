@@ -375,6 +375,8 @@ var popup_show = function(idx_markerlist) {
 			var marker =  L.marker([lat,lng], {icon: myIcon,title: ''}).addTo(g_map);
 			marker.setZIndexOffset(1000);
 			g_popup = marker;
+			// clicks inside the popup must not reach the map (its click handler hides #pcontent)
+			L.DomEvent.disableClickPropagation(marker._icon);
 			//marker.on('click',popup_click);
 			//console.log('Popup');console.log(marker);
 		} else {
@@ -383,6 +385,7 @@ var popup_show = function(idx_markerlist) {
 			var newpos = [lat,lng];
 			g_popup.setLatLng(newpos);
 			g_popup.setIcon(myIcon);
+			L.DomEvent.disableClickPropagation(g_popup._icon); // setIcon creates a new element
 		}
 	});
 	
