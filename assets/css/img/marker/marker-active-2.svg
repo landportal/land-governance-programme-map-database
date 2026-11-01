@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="40px" height="46px" viewBox="0 0 40 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>Pin mittel gruen</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M20.0002075,7.0000002 C25.4489986,6.99926616 30.4695448,9.95422067 33.1144947,14.7187065 C35.7594445,19.4831923 35.6126547,25.3075889 32.7310614,29.9327501 C30.0824559,34.17625 20.0002075,43 20.0002075,43 C20.0002075,43 9.9074607,34.17025 7.25960507,29.9177501 C4.38509069,25.2918209 4.2435754,19.4709941 6.88989547,14.7108031 C9.53621554,9.95061203 14.5545046,6.9991157 20.0002075,7.0000002 L20.0002075,7.0000002 Z" id="path-1"></path>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="-2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.153362772 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <mask id="mask-3" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="30" height="36" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Pin-mittel-gruen">
+            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+            <use stroke-opacity="0.396314538" stroke="#000000" mask="url(#mask-3)" stroke-width="2" fill="#22AA10" fill-rule="evenodd" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

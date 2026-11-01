@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+	<title>Land governance programme map</title>
+
+	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicons/favicon.ico" />
+	<link rel="icon" type="image/x-icon" href="assets/images/favicons/favicon.ico" />
+
+	<link rel="stylesheet" href="assets/css/fonts/font-awesome-4.6.3/css/font-awesome.min.css" />
+
+	<link rel="stylesheet" type="text/css" href="assets/js/jquery-ui/jquery-ui.min.css" />
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery-ui/jquery-ui.min.js"></script>
+	<script src="assets/js/jquery.ui.touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+	<!-- Chosen -->
+	<link rel="stylesheet" type="text/css" href="assets/js/chosen/chosen.min.css" />
+	<script src="assets/js/chosen/chosen.jquery.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="assets/more/leaflet0.7.7/leaflet.css" />
+	<script src="assets/more/leaflet0.7.7/leaflet.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="assets/css/style-map.css" />
+
+	<script src="assets/js/engine.js"></script>
+	<script src="assets/js/basics.js"></script>
+	<script src="assets/js/accordeon.js"></script>
+	<script src="assets/js/map.js"></script>
+	
+
+	<script type="text/javascript">
+		var g_url = '/';
+		var g_token = '';
+		LG.load('assets/data/data.json');
+		var g_cats = [];
+	</script>
+	<style>
+	#lg-attribution { position: fixed; left: 0; right: 0; bottom: 0; z-index: 2000; padding: 3px 8px; font: 11px/1.3 Arial, sans-serif;
+		color: #444; background: rgba(255,255,255,0.88); text-align: center; }
+	#lg-attribution a { color: #2695cc; }
+	</style>
+</head>
+
+
+<body class="">
+	<div id="page">
+		<div id="map"></div>
+		<div id="controlbox">
+			<a class="uguide" href="index.html#" onclick="infodialog('uguide', this);return false;">User guide</a>
+			<a class="iddisclaimer" href="index.html#" onclick="infodialog('disclaimer', this);return false;">Disclaimer</a>
+			<!--<a id="butterrain" class="buttonselected" href="#" onclick="setlayer(1);return false;">Terrain</a>-->
+			<!--<a id="butsat" class="" href="#" onclick="setlayer(2);return false;">Satellite</a>-->
+		</div>
+		<div id="mapcontent">
+			<div id="uguide" title="User guide" class="hidden">
+				<p>Make your search for programmes using the <strong>filter options on the left side</strong>. You may select as many funders or VGGT chapters/sub-chapters as you like, 
+but only one partner country can be selected at a time.</p>
+				<p style="text-align: center;"><img src="assets/images/uguide2.png" alt="tutorial book symbol"></p>
+				<p>If a specific partner country is selected, the result of your search will initially appear in a pop-up in the Map. Further details of the programmes in that country 
+will be shown at the bottom of the page.</p>
+				<p><strong>You may also click directly in a given country in the Map.</strong> Again, a pop-up will inform the funding amount of programmes in that country and further details can be seen 
+by clicking on <em>more</em> or <em>show programmes</em></p>
+				<p>If you wish to know all the programmes funded by one or more specific donors, select only the donors and click on <em>show programmes</em> to see the detailed list at the bottom.</p>
+				<p style="text-align: center;"><img src="assets/images/uguide1.png" alt="number of projects"></p>
+				<p>The size of the pins in the Map indicates the rough volume of programmes in each country.</p>
+				<p>Summaries of the VGGT chapters were prepared by the Secretariat to facilitate navigation in the Map. In case of doubt, the <a href="http://www.fao.org/docrep/016/i2801e/i2801e.pdf" target="_blank">original VGGT text</a> will prevail and be consulted. Original funding amounts given in a currency other than US dollar were converted, in most cases, using the exchange rate of the data insertion date. Where indicated, funding figures may represent the full budget of a larger programme where land governance is one of several components. Hence, the sum total of funding provided by all programmes in the database is only an approximation.</p>
+				<p><strong>You have more questions? <a href="mailto:secretariat@donorplatform.org" target="_blank">Let us know!</a></strong></p>
+			</div>
+			<div id="disclaimer" title="Disclaimer" class="hidden">
+				<p>This database and map is the result of collaborative efforts by members of the <a href="https://www.donorplatform.org/land-governance.html" target="_blank">Global Donor Working Group on Land</a>, a network of 24 bilateral and multilateral donors aiming to improve land governance and enhance transparency and coordination. It is hosted by the <a href="https://www.donorplatform.org" target="_blank">Global Donor Platform for Rural Development</a>, which acts as Secretariat of the working group. Each donor is responsible for managing and updating the information contained in the database on a regular basis – the data is updated at least twice a year, around February and August.</p>
+				<p>Any questions regarding specific programmes and projects should be addressed to the relevant member of the Global Donor Working Group on Land:</p>
+				<ul>
+					<li>Austria: <a href="mailto:waltraud.rabitsch@ada.gv.at" target="_blank">Waltraud Rabitsch</a> (ADA)</li>
+					<li>Canada: <a href="mailto:nikita.eriksenhamel@international.gc.ca" target="_blank">Nikita Eriksen-Hamel</a></li>
+					<li>European Commission: <a href="mailto:arno.schaefer@ec.europa.eu" target="_blank">Arno Schaefer</a>, <a href="mailto:Etienne.COYETTE@ec.europa.eu" target="_blank">Etienne Coyette</a></li>
+					<li>FAO: <a href="mailto:Francesca.Romano@fao.org" target="_blank">Francesca Romano</a></li>
+					<li>Finland: <a href="mailto:sanna-liisa.taivalmaa@formin.fi" target="_blank">Sanna-Liisa Taivalmaa</a> (MFA)</li>
+					<li>France: <a href="mailto:clemence.contensou@diplomatie.gouv.fr" target="_blank">Clemence Contensou</a> (MFA)</li>
+					<li>Germany: <a href="mailto:fritz.jung@bmz.bund.de" target="_blank">Fritz Jung</a> (BMZ), <a href="mailto:622@bmel.bund.de" target="_blank">Dept. International Organisations</a> (BMEL), <a href="mailto:christian.graefen@giz.de" target="_blank">Christian Graefen</a> (GIZ), <a href="mailto:katja.eichner@kfw.de" target="_blank">Katja Eichner</a> (KfW)</li>
+					<li>IFAD: <a href="mailto:h.liversage@ifad.org" target="_blank">Harold Liversage</a></li>
+					<li>Italy: <a href="mailto:stefano.deldebbio@aics.gov.it" target="_blank">Stefano del Debbio</a> (IADC)</li>
+					<li>Japan: <a href="mailto:morita.yuko@jica.go.jp" target="_blank">Yuko Morita</a> (JICA)</li>
+					<li>Netherlands: <a href="mailto:frits-vander.wal@minbuza.nl" target="_blank">Frits van der Wal</a></li>
+					<li>Norway: <a href="mailto:Maria.Lodin@kartverket.no" target="_blank">Maria Lodin</a> (Kartverket)</li>
+					<li>Omidyar Network: <a href="mailto:ypanfil@omidyar.com" target="_blank">Yuliya Panfil</a></li>
+					<li>Sweden: <a href="mailto:emilie.goransson@sida.se" target="_blank">Emilie Göransson</a></li>
+					<li>Switzerland: <a href="mailto:bernard.zaugg@eda.admin.ch" target="_blank">Bernard Zaugg</a></li>
+					<li>UN-Habitat: <a href="mailto:oumar.sylla@unhabitat.org" target="_blank">Oumar Sylla</a></li>
+					<li>United Kingdom: <a href="mailto:c-penrose-buckley@dfid.gov.uk" target="_blank">Chris Penrose Buckley</a> (DFID)</li>
+					<li>United States: <a href="mailto:castevens@usaid.gov" target="_blank">Caleb Stevens</a> (USAID), <a href="mailto:lisherj@mcc.gov" target="_blank">Jennifer Lisher</a> (MCC)</li>
+					<li>World Bank: <a href="mailto:lpott@worldbank.org" target="_blank">Linus Pott</a></li>
+				</ul>
+			</div>
+			<div id="cat1vg2" title="General Matters" class="hidden vggt-accordion">
+				<p>This part provides guidance which applies to all situations of governance of tenure. It sets out guiding principles on responsible land tenure and addresses aspects of governance of tenure with regard to rights and responsibilities; policy, legal and organizational frameworks; and delivery of services.</p>
+				<h3>3A General Principles <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<div>
+				<p>Determines that states should:</p>
+				<ol>
+					<li>Recognize and respect all legitimate tenure right holders and their rights</li>
+					<li>Safeguard legitimate tenure rights against infringements</li>
+					<li>Promote &amp; facilitate the enjoyment of legitimate tenure rights</li>
+					<li>Provide access to justice</li>
+					<li>Prevent tenure disputes, violent conflicts and corruption</li>
+				</ol>
+				<p>Also guides non-state actors (including business enterprises) to respect human rights and legitimate tenure rights. They should act with due diligence to avoid infringing on the rights of others, and assess and address any adverse impacts, including cooperating in non-judicial mechanisms.</p></div>
+				<h3>3B Principles of implementation <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<div>
+				<p>Captures 10 human rights principles relevant for all tenure related activities.</p>
+				<ol>
+					<li>Human dignity</li>
+					<li>Non-discrimination</li>
+					<li>Equity and justice</li>
+					<li>Gender equality</li>
+					<li>Holistic and sustainable approach</li>
+					<li>Consultation and participation</li>
+					<li>Rule of law</li>
+					<li>Transparency</li>
+					<li>Accountability</li>
+					<li>Continuous improvement</li>
+				</ol>
+				</div>
+				<h3>4 Rights and Responsibilities related to tenure <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Stresses that legal recognition should be given to legitimate tenure rights that are not currently protected by law, that legitimate tenure rights should be protected, and that all forms of discrimination related to tenure rights should be removed. Also demands that states should ensure that all actions regarding tenure and its governance are consistent with their existing obligations under national and international law.</p>
+				<h3>5 Policy, legal and organizational frameworks related to tenure <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Encourages states to provide and maintain policy, legal and organizational frameworks that promote responsible governance of tenure of land, fisheries and forests (reflecting their interconnected relationship) and to ensure that these frameworks recognize and respect legitimate tenure rights, are non-discriminatory, participatory, and address the obstacles faced by women and girls with regard to tenure. Also suggests that states should clearly define the roles and responsibilities of implementing agencies, ensure coordination between them, as well as with local governments, indigenous peoples and other communities with customary tenure systems, and publicize opportunities for civil society, private sector and academia to contribute to developing and implementing policy, legal and organizational frameworks.</p>
+				<h3>6 Delivery of services <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Recommends that states should provide prompt, efficient, accessible and non-discriminatory services to protect tenure rights, to promote and facilitate the enjoyment of those rights, and to resolve disputes. Public agencies and judicial authorities should serve the entire population, including those in remote locations. Services should be timely and affordable, and respond to the needs of those who request the services. States and non-state actors should endeavour to prevent corruption with regard to tenure rights, particularly through consultation and participation, rule of law, transparency and accountability. States should also promote the sharing and wide distribution of tenure related information and inform users of their rights and responsibilities.</p>
+			</div>
+			<div id="cat1vg3" title="Legal recognition and allocation of tenure rights" class="hidden vggt-accordion">
+				<p>Addresses the legal recognition of tenure rights of indigenous peoples and other communities with customary tenure systems, as well as of informal tenure rights. Also covers the initial allocation of tenure rights to land, fisheries and forests that are owned or controlled by the public sector.</p>
+				<h3>7 Safeguards <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Stresses that when States recognize or allocate tenure rights, they should put safeguards in place to avoid infringing on or extinguishing the tenure rights of others. States should first identify all existing tenure rights and right holders, whether recorded or not. Men and women should enjoy the same rights when tenure rights are recognized. Also suggests that people whose tenure rights are recognized or who are allocated tenure rights should have full knowledge of their rights. Where it is not possible to provide legal recognition of tenure rights, States should prevent forced evictions that are inconsistent with their international human rights obligations.</p>
+				<h3>8 Public land, fisheries and forests <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Recommends that States should recognize and record legitimate tenure rights to land, fisheries and forests that are publicly owned or controlled. States should determine which of the land, fisheries and forests they will retain and use, and which of these resources will be allocated for use by others and under what conditions. States should also develop and publicize policies covering the use and control of land, fisheries and forests retained by the public sector as well as the the allocation of tenure rights to others in transparent, participatory ways, using clear and understandable procedures, thereby recognizing the range of tenure rights and rights holders.</p>
+				<h3>9 Indigenous peoples and other communities with customary tenure systems <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Emphasizes that particular attention should be given to the recognition and protection of customary tenure rights. States and other parties should hold good faith consultations with indigenous peoples and other communities before initiating any project that affects the resources for which the communities hold rights (for indigenous peoples this includes obtaining their free, prior, and informed consent, FPIC). Communities with legitimate customary tenure rights should not be forcibly evicted from ancestral lands. States should consider adapting their policy, legal and organizational frameworks to recognize customary tenure systems, thereby ensuring full and effective participation.</p>
+				<h3>10 Informal tenure <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Encourages States to acknowledge the emergence of informal tenure, particularly where it arises from large-scale migrations. States should give legal recognition to informal tenure through participatory and gender-sensitive processes where this is possible, and where it is not possible, States should prevent forced evictions.</p>
+			</div>
+			<div id="cat1vg4" title="Transfer of tenure rights" class="hidden vggt-accordion">
+				<p>Provides guidance for when tenure rights are transferred or changed in various ways after their initial recognition or allocation, including markets; investments; land consolidation and other readjustment approaches; restitution; redistributive reforms; and expropriation and compensation.</p>
+				<h3>11 Markets <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Recommends that States should establish transparent, efficient and fair market operations including legislative and regulatory systems, provide non-discriminatory access to markets, and prevent uncompetitive practices and harmful impacts on vulnerable groups resulting from land speculation, concentration and abuse of customary forms of tenure. Also demands that states should support the establishment of appropriate and reliable land-tenure recording systems so that land transaction costs can be conducted efficiently. State and non-state actors should adhere to applicable ethical standards.</p>
+				<h3>12 Investments <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Recognizes that responsible investments are essential to improve food security. Investments should do no harm, strive to contribute to socio-economic and rural development, and safeguard against holders of legitimate tenure rights being dispossessed of their rights, particularly with respect to large-scale transactions. Investors have the responsibility to respect national laws and legislation and recognize and respect tenure rights of others and the rule of law.</p>
+				<h3>13 Land consolidation and other readjustment approaches <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Encourages States to consider ways to improve the layout and use of parcels or holdings, while ensuring that all participants are at least as well off after the schemes compared with before. Readjustment purposes should fit particular local requirements and establish appropriate safeguards. States may consider the establishment of land banks, including in environmental protection and infrastructure projects and improvement of fragmented structures.</p>
+				<h3>14 Restitution <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Demands that States should consider providing restitution for the loss of legitimate tenure rights, where possible by returning the original parcels to the people who suffered the loss. Where the original parcels cannot be returned, adequate compensation in the form of money, alternative parcels or a combination should be provided.</p>
+				<h3>15 Redistributive reforms <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Recommends that states may consider implementing redistributive reforms in order to facilitate broad and equitable access to land, fisheries and forests. Such reforms should follow the rule of law in line with national laws and procedures, facilitate consultations, assess and monitor impacts, respect existing legitimate tenure rights, and provide just compensation, means for conflict resolution, and the required support to beneficiaries, e.g. access to credit, inputs and technical assistance in rural extension. They may also consider land ceilings.</p>
+				<h3>16 Expropriation and compensation <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>States that the expropriation of tenure rights is only legitimate for clearly defined and lawful public purposes, and can only be carried out in a transparent and participatory manner. Fair valuation and prompt compensation for the loss of tenure rights should be ensured by states. Evictions should be avoided and, if justified, be conducted consistent with relevant human rights obligations.</p>
+			</div>
+			<div id="cat1vg5" title="Administration of tenure" class="hidden vggt-accordion">
+				<p>Covers the administrative aspects of effective, including records of tenure rights; valuation; taxation; regulated spatial planning; resolution of disputes over tenure rights; and transboundary matters.</p>
+				<h3>17 Records of tenure rights <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Stresses the importance of providing systems for recording, maintaining and publicizing all types of tenure rights to improve tenure security. People should be able to record their tenure rights without discrimination. Particular care should be taken to prevent the registration of competing rights. Implementing agencies should adopt simplified procedures and locally suitable technologies.</p>
+				<h3>18 Valuation <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Focuses on the provision of fair and timely valuations of tenure rights for specific purposes, such as markets, security for loans, investments, expropriation and taxation. Valuation systems should take non-market values into account. States should develop and publicize national valuation standards.</p>
+				<h3>19 Taxation <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Encourages states to use their power to raise tax revenue to contribute to the achievement of their broader objectives. Recommend that states should strive to develop policies, laws and organizations frameworks regulating the taxation of tenure rights and that taxes should be administered efficiently and transparently. Tax policies and laws related to tenure rights should be used where appropriate to provide financing for decentralized levels of government and the local provision of services. </p>
+				<h3>20 Regulated spatial planning <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Recognizes that the regulation of spatial use (such as land use) affects tenure rights by reducing the options for using the natural resources. Spatial planning should be carried out in ways that reconcile and harmonize different objectives for the use of the natural resources, thereby taking into account the promotion of diversified sustainable land management. Spatial planning should be coordinated between different state levels and developed in gender-sensitive ways and with wide public participation, considering customary tenure systems.</p>
+				<h3>21 Resolution of disputes over tenure rights <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Stresses the importance of access to timely, affordable and effective means of resolving disputes over tenure rights, including the right to appeal. Access to justice may be provided through judicial and administrative bodies, specialized tribunals and alternative forms of dispute resolution, especially at the local level. Legal assistance should be provided to vulnerable persons to ensure safe access for all to justice without discrimination.</p>
+				<h3>22 Transboundary matters <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Recognizes that while tenure is a matter of national sovereignty, there may be transboundary aspects, e.g. involving pastoralists whose traditional grazing areas or seasonal migration routes lie across international boundaries. In cases where transboundary matters arise, the affected parties should work together to protect such tenure rights. States should support this by harmonizing legal standards, coordinating with regional bodies and by strengthening existing international measures that administer tenure rights.</p>
+			</div>
+			<div id="cat1vg6" title="Responses to emergencies" class="hidden vggt-accordion">
+				<p>The earlier parts of the Guidelines address mostly “every day” situations, whereas this part addresses extreme situations where people could be displaced on a large scale. In all cases, States should strive to prepare and implement strategies and actions in consultation with and participation of people who may be displaced. The provision of an alternative place to settle should not jeopardize the livelihoods of others.</p>
+				<h3>23 Climate change <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Encourages policies and laws on tenure to take into account possible strategies and actions to deal with the effects of climate change. States should protect tenure rights holders against the effects of climate change, thereby particularly considering effects on and participation of small-scale farmers, vulnerable people and those threatened by displacement.</p>
+				<h3>24 Natural disasters <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Recommends that tenure is addressed in disaster preparedness programmes, and in the emergency and reconstruction phases following natural disasters. The tenure rights of displaced persons should be particularly protected.</p>
+				<h3>25 Conflicts in respect to tenure of land, fisheries and forests <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Stresses that tenure problems should be resolved through peaceful means by all parties in order that they do not lead to conflicts. When conflicts arise, States and others should try to protect tenure rights and related records in accordance with national and international law. When conflicts cease, States should ensure that the restitution and resettlement programmes support lasting solutions. Refugees and displaced persons should receive particular attention.</p>
+			</div>
+			<div id="cat1vg7" title="Promotion, implementation, monitoring & evaluation" class="hidden vggt-accordion">
+				<p>Provides guidance on how the principles and practices of the Guidelines can be promoted, implemented, monitored and evaluated</p>
+				<h3>26 Promotion, implementation, M &amp; E <img data-status="open" class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt=""></h3>
+				<p>Suggests that states have the responsibility for implementing, monitoring, and evaluating the Guidelines. They are encouraged to set up multi-stakeholder platforms and frameworks and local, national and regional levels or use existing ones. Development partners, UN agencies and regional organizations are encouraged to support voluntary efforts by states to implement the Guidelines. All parties, including civil society organizations and the private sector, are encourages to use collaborative efforts to promote and implement the Guidelines.</p>
+			</div>
+			<ul id="map-accordeon" class="accordeon">
+				<li class="li-roundall">
+					<div class="accordeon-title-area">
+						<img class="openicon openiconlarge" src="assets/images/svg/right-arrow.svg" alt="">
+						<h2><img src="assets/css/img/donor-platform-logo.svg" class="h2image" alt="Donor Platform logo">
+						Land governance<br>
+						Programme Map &amp; Database</h2>
+						<p class="p-additionl-info">853 programmes, 57 active, 796 completed<br>
+						USD 0.3 billion for active programmes</p>
+					</div>
+					<div class="accordeon-content-area border">
+						<h3>Global scope</h3>
+						<p>Cooperating with the <a href="https://www.donorplatform.org/land-governance/global-donor-working-group-on-land" style="color: #2695cc;" target="_blank">Global Donor Working Group on Land</a> – comprising bilateral and multilateral donors as well as development agencies – USAID led a data collection and mapping project that gathered information on donor investments to implement the <a href="http://www.fao.org/docrep/016/i2801e/i2801e.pdf" style="color: #2695cc;" target="_blank">Voluntary Guidelines for the Responsible Governance of Tenure of Land, Fisheries, and Forests in the Context of National Food Security (VGGT)</a>.  As a result of this collaboration, the Land Governance Programme Map was developed in 2013, allowing for more transparency of donor investments in land governance.</p>
+
+						<h3>Main objectives of the database</h3>
+						<p>The overall aim of the database is to improve donor coordination and to support implementation of the VGGT. The objective of the VGGT is to promote secure tenure rights and equitable access to land, fisheries and forests as a means to ensure food security for all. To achieve this a clear understanding of who is doing what and where in the land and resource governance sector is necessary. The database therefore contains information on the location, duration, funding and scope of each programme, as well as on the specific aspects of the VGGT chapters it supports.</p>
+
+						<h3>Visualisation and additional functions</h3>
+						<p>The interactive mapping tool displays where different donors and development agencies are working and what they do with respect to land and resource governance. The database allows donors to include links to supplemental resources, such as reports on their programme websites. This information helps various stakeholders identify opportunities to leverage their resources for greater impact.</p>
+					</div>
+				</li>
+				<li class="li-static li-roundtop" style="position:relative;">
+					<h2 id="idshowfilters" class="extra-h2-acc" onclick="showfilters();return false;">Filter for programmes
+						<img data-status="open" class="openicon open openiconlarge" src="assets/images/svg/right-arrow.svg" alt="">
+					</h2>
+					<a href="index.html#" style="color: #aaaaaa;" onclick="reset_search();">Reset search</a>
+					<div id="statusbuttondescription">
+						Status<br>
+					</div>
+					<div id="statusbuttonlist">
+						<a id="s1" class="statusbutton buttonselected" data-id="1" href="index.html#" onclick="change_status(1);return false;">All</a>
+						<a id="s2" class="statusbutton" data-id="2" href="index.html#" onclick="change_status(2);return false;">Active</a>
+						<a id="s3" class="statusbutton" data-id="2" href="index.html#" onclick="change_status(3);return false;">Completed</a>
+					</div>
+				</li>
+				<li class="li-sub" id="idfilterdonors">
+					<div class="accordeon-title-area">
+						<img class="openicon" src="assets/images/svg/right-arrow.svg" alt="">
+						<h2><span class="thetotalcounter">21</span> Donors <span id="idcounterdonors" class="thecounter"></span></h2>
+					</div>
+					<div class="accordeon-content-area">
+						<a id="fall" class="listbutton buttonselected" style="clear:left; margin-bottom: 15px;" href="index.html#" onclick="select_all_funders();return false;">All Donors</a>
+						
+						<div id="funderlist">
+								<a id="f1" class="listbutton" data-id="1" href="index.html#" onclick="funder_click(1);return false;">Austria</a>
+								<a id="f2" class="listbutton" data-id="2" href="index.html#" onclick="funder_click(2);return false;">Belgium</a>
+								<a id="f14" class="listbutton" data-id="14" href="index.html#" onclick="funder_click(14);return false;">Canada</a>
+								<a id="f3" class="listbutton" data-id="3" href="index.html#" onclick="funder_click(3);return false;">Denmark</a>
+								<a id="f4" class="listbutton" data-id="4" href="index.html#" onclick="funder_click(4);return false;">European Union</a>
+								<a id="f5" class="listbutton" data-id="5" href="index.html#" onclick="funder_click(5);return false;">FAO</a>
+								<a id="f17" class="listbutton" data-id="17" href="index.html#" onclick="funder_click(17);return false;">Finland</a>
+								<a id="f6" class="listbutton" data-id="6" href="index.html#" onclick="funder_click(6);return false;">France</a>
+								<a id="f7" class="listbutton" data-id="7" href="index.html#" onclick="funder_click(7);return false;">Germany</a>
+								<a id="f16" class="listbutton" data-id="16" href="index.html#" onclick="funder_click(16);return false;">IFAD</a>
+								<a id="f20" class="listbutton" data-id="20" href="index.html#" onclick="funder_click(20);return false;">Italy</a>
+								<a id="f15" class="listbutton" data-id="15" href="index.html#" onclick="funder_click(15);return false;">Japan</a>
+								<a id="f8" class="listbutton" data-id="8" href="index.html#" onclick="funder_click(8);return false;">Netherlands</a>
+								<a id="f19" class="listbutton" data-id="19" href="index.html#" onclick="funder_click(19);return false;">Norway</a>
+								<a id="f18" class="listbutton" data-id="18" href="index.html#" onclick="funder_click(18);return false;">Omidyar Network</a>
+								<a id="f13" class="listbutton" data-id="13" href="index.html#" onclick="funder_click(13);return false;">Sweden</a>
+								<a id="f9" class="listbutton" data-id="9" href="index.html#" onclick="funder_click(9);return false;">Switzerland</a>
+								<a id="f21" class="listbutton" data-id="21" href="index.html#" onclick="funder_click(21);return false;">UN-Habitat</a>
+								<a id="f11" class="listbutton" data-id="11" href="index.html#" onclick="funder_click(11);return false;">United Kingdom</a>
+								<a id="f10" class="listbutton" data-id="10" href="index.html#" onclick="funder_click(10);return false;">United States</a>
+								<a id="f12" class="listbutton" data-id="12" href="index.html#" onclick="funder_click(12);return false;">World Bank</a>
+						</div>
+						<div style="clear:left"></div>
+					</div>
+				</li>
+				<li class="li-sub" id="idfiltercountries">
+					<div class="accordeon-title-area">
+						<img class="openicon" src="assets/images/svg/right-arrow.svg" alt="">
+						<h2><span id="idcountercountries" class="thetotalcounter"></span> Partner countries</h2>
+					</div>
+					<div class="accordeon-content-area">
+						<select data-placeholder="Choose a Country..." class="chosen-select" id="countrieslist">
+							<option value=""></option>
+						</select>
+						<div style="clear:left"></div>
+					</div>
+				</li>
+				<li class="li-sub li-roundbottom" id="idfiltervg">
+					<div class="accordeon-title-area">
+						<img class="openicon" src="assets/images/svg/right-arrow.svg" alt="">
+						<h2>VGGT <span id="idcountervgs" class="thecounter"></span></h2>
+					</div>
+					<div class="accordeon-content-area">
+						<ul id="vgs">
+<li><div><span class="cat1title"><span class="cat1number">2</span> General Matters</span> <a href="index.html#" onclick="var elt = $('.leaflet-control-zoom'); infodialog('cat1vg2', elt, 'left top', 'right top'); return false;" class="vgs-info"><i class="fa fa-info-circle"></i></a></div>
+ <ul>
+<li data-vgid="10"><span class="cat2number">3A</span><span class="li-text">General matters</span>
+<li data-vgid="17"><span class="cat2number">3B</span><span class="li-text">Principles of implementation</span>
+<li data-vgid="28"><span class="cat2number">4</span><span class="li-text">Rights and responsibilities</span>
+<li data-vgid="39"><span class="cat2number">5</span><span class="li-text">Policy, legal and organizational frameworks</span>
+<li data-vgid="49"><span class="cat2number">6</span><span class="li-text">Delivery of services</span>
+ </li>
+ </ul>
+</li>
+<li><div><span class="cat1title"><span class="cat1number">3</span> Legal recognition and allocation of tenure rights</span> <a href="index.html#" onclick="var elt = $('.leaflet-control-zoom'); infodialog('cat1vg3', elt, 'left top', 'right top'); return false;" class="vgs-info"><i class="fa fa-info-circle"></i></a></div>
+ <ul>
+<li data-vgid="66"><span class="cat2number">7</span><span class="li-text">Safeguards</span>
+<li data-vgid="73"><span class="cat2number">8</span><span class="li-text">Public land, fisheries and forests</span>
+<li data-vgid="85"><span class="cat2number">9</span><span class="li-text">Customary tenure systems</span>
+<li data-vgid="59"><span class="cat2number">10</span><span class="li-text">Informal tenure</span>
+ </li>
+ </ul>
+</li>
+<li><div><span class="cat1title"><span class="cat1number">4</span> Transfers of tenure rights</span> <a href="index.html#" onclick="var elt = $('.leaflet-control-zoom'); infodialog('cat1vg4', elt, 'left top', 'right top'); return false;" class="vgs-info"><i class="fa fa-info-circle"></i></a></div>
+ <ul>
+<li data-vgid="98"><span class="cat2number">11</span><span class="li-text">Markets</span>
+<li data-vgid="107"><span class="cat2number">12</span><span class="li-text">Investments</span>
+<li data-vgid="123"><span class="cat2number">13</span><span class="li-text">Land consolidation</span>
+<li data-vgid="130"><span class="cat2number">14</span><span class="li-text">Restitution</span>
+<li data-vgid="135"><span class="cat2number">15</span><span class="li-text">Redistributive reforms</span>
+<li data-vgid="146"><span class="cat2number">16</span><span class="li-text">Expropriation and compensation</span>
+ </li>
+ </ul>
+</li>
+<li><div><span class="cat1title"><span class="cat1number">5</span> Administration of tenure</span> <a href="index.html#" onclick="var elt = $('.leaflet-control-zoom'); infodialog('cat1vg5', elt, 'left top', 'right top'); return false;" class="vgs-info"><i class="fa fa-info-circle"></i></a></div>
+ <ul>
+<li data-vgid="156"><span class="cat2number">17</span><span class="li-text">Records of tenure rights</span>
+<li data-vgid="162"><span class="cat2number">18</span><span class="li-text">Valuation</span>
+<li data-vgid="168"><span class="cat2number">19</span><span class="li-text">Taxation</span>
+<li data-vgid="172"><span class="cat2number">20</span><span class="li-text">Spatial planning</span>
+<li data-vgid="178"><span class="cat2number">21</span><span class="li-text">Dispute resolution</span>
+<li data-vgid="185"><span class="cat2number">22</span><span class="li-text">Transboundary matters</span>
+ </li>
+ </ul>
+</li>
+<li><div><span class="cat1title"><span class="cat1number">6</span> Responses to emergencies</span> <a href="index.html#" onclick="var elt = $('.leaflet-control-zoom'); infodialog('cat1vg6', elt, 'left top', 'right top'); return false;" class="vgs-info"><i class="fa fa-info-circle"></i></a></div>
+ <ul>
+<li data-vgid="189"><span class="cat2number">23</span><span class="li-text">Climate change</span>
+<li data-vgid="193"><span class="cat2number">24</span><span class="li-text">Natural disasters</span>
+<li data-vgid="199"><span class="cat2number">25</span><span class="li-text">Conflicts in respect to tenure</span>
+ </li>
+ </ul>
+</li>
+<li><div><span class="cat1title"><span class="cat1number">7</span> Promotion, implementation, M &amp; E</span> <a href="index.html#" onclick="var elt = $('.leaflet-control-zoom'); infodialog('cat1vg7', elt, 'left top', 'right top'); return false;" class="vgs-info"><i class="fa fa-info-circle"></i></a></div>
+ <ul>
+<li data-vgid="207"><span class="cat2number">26</span><span class="li-text">Promotion, implementation, M &amp; E</span>
+ </li>
+ </ul>
+</li>
+						<div style="clear:left"></div>
+					</div>
+				</li>
+			</ul>
+			<div style="clear:both"></div>
+		</div> <!-- mapcontent -->
+
+	<div id="mapsocial">
+		<ul>
+			<li><a href="index.html#" onclick="window.open('https://twitter.com/share', 'twitter', 'width=575,height=400');return false;"><img src="assets/images/twitter.png" alt="Twitter icon" /></a></li>
+			<li><a href="index.html#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog','width=626,height=436');return false;"><img src="assets/images/facebook.png" alt="Facebook icon" /></a></li>
+			<li><a href="index.html#" onclick="window.open('https://www.linkedin.com/cws/share?url='+encodeURIComponent(location.href), 'linkedin', 'width=626,height=436');return false;"><img src="assets/images/linkedin.png" alt="Linkedin" /></a></li>
+			<li><a href="mailto:test@test.com"><img src="assets/images/email.png" alt="Email" /></a></li>
+		</ul>
+	</div>
+
+		<div id="footerarea">
+			<div class="footer1">
+			</div>
+			<div class="footer2">
+				<span id="id_n_prog">XXX programmes</span><br>
+				<span class="byyourselection">by your selection</span><br>
+			</div>
+			<div class="footer3">
+				<a href="index.html#show-programmes" class="button" onclick="show_programmes();return false;">Show programmes <img width="17" height="10" src="assets/images/svg/bottom-arrow-white.svg" alt=""></a>
+			</div>
+		</div> <!-- footerarea -->
+	</div> <!-- page -->
+
+	<div id="pcontent" >
+		<div class="divtitle" >
+			<div class="divtitle1">
+			</div>
+			<div class="divtitle2">
+				<h3><span id="idprogcounttext"></span></h3>
+				<div class="subtext1">by your selection</div>
+				<div id="id_n_active" class="subtext2">XX active</div>
+				<div class="subtext3"><span id="id_active_funds">USD XXX,XXX,XXX active funds</span> <span id="id_total_funds" class="greytext">USD XX,XXX,XXX total funds</span></div>
+			</div>
+			<div class="divtitle3">
+				<a href="index.html#closepopup" class="button buttonclose" onclick="divpcontent_hide();return false;">Show map <img width="17" height="12" style="vertical-align: center" src="assets/images/svg/top-arrow-white.svg" alt=""></a>
+			</div>
+			<div style="clear: left"></div>
+		</div>
+
+		<ul id="ulprogrammes">
+			<li class="programmedetails">
+				<h4>Here will be the programme name</h4>
+				<dl class="pdetails1">
+					<dt>Donors:</dt>
+					<dd>Netherlands</dd>
+					<dt>Implementers:</dt>
+					<dd>LANDac Netherlands Academy for Land governance</dd>
+					<dt>Partner countries:</dt>
+					<dd>Argentina, Benin, Burkina Faso, Congo</dd>
+					<dt>Summary:</dt>
+					<dd>LANDac is a partnership between Dutch organizations active in the field of land governance with the aim to optimze the link between land gobenance, sustainable development and poverty alleviation by generating, analyzihng, synthesizing and disseminating knowledge. Some of its activities...</dd>
+				</dl>
+				<dl class="pdetails2">
+					<dt style="display:none">Sum:</dt>
+					<dd>USD 1,350,000 funds</dd>
+					<dt>Donors:</dt>
+					<dd>Netherlands</dd>
+					<dt>Implementers:</dt>
+					<dd>LANDac Netherlands Academy for Land governance</dd>
+				</dl>
+				<div style="clear: left"></div>
+			</li>
+			<li class="programmedetails">
+				<h4>Here will be the programme name</h4>
+				<dl class="pdetails1">
+					<dt>Donors:</dt>
+					<dd>Netherlands</dd>
+					<dt>Implementers:</dt>
+					<dd>LANDac Netherlands Academy for Land governance</dd>
+					<dt>Partner countries:</dt>
+					<dd>Argentina, Benin, Burkina Faso, Congo</dd>
+					<dt>Summary:</dt>
+					<dd>LANDac is a partnership between Dutch organizations active in the field of land governance with the aim to optimze the link between land gobenance, sustainable development and poverty alleviation by generating, analyzihng, synthesizing and disseminating knowledge. Some of its activities...</dd>
+				</dl>
+				<dl class="pdetails2">
+					<dt style="display:none">Sum:</dt>
+					<dd>USD 1,350,000 funds</dd>
+					<dt>Donors:</dt>
+					<dd>Netherlands</dd>
+					<dt>Implementers:</dt>
+					<dd>LANDac Netherlands Academy for Land governance</dd>
+				</dl>
+				<div style="clear: left"></div>
+			</li>
+			<li class="programmedetails">
+				<h4>Here will be the programme name</h4>
+				<dl class="pdetails1">
+					<dt>Donors:</dt>
+					<dd>Netherlands</dd>
+					<dt>Implementers:</dt>
+					<dd>LANDac Netherlands Academy for Land governance</dd>
+					<dt>Partner countries:</dt>
+					<dd>Argentina, Benin, Burkina Faso, Congo</dd>
+					<dt>Summary:</dt>
+					<dd>LANDac is a partnership between Dutch organizations active in the field of land governance with the aim to optimze the link between land gobenance, sustainable development and poverty alleviation by generating, analyzihng, synthesizing and disseminating knowledge. Some of its activities...</dd>
+				</dl>
+				<dl class="pdetails2">
+					<dt style="display:none">Sum:</dt>
+					<dd>USD 1,350,000 funds</dd>
+					<dt>Donors:</dt>
+					<dd>Netherlands</dd>
+					<dt>Implementers:</dt>
+					<dd>LANDac Netherlands Academy for Land governance</dd>
+				</dl>
+				<div style="clear: left"></div>
+			</li>
+		</ul>
+	</div>
+
+<script>
+	"use strict";
+	var leaflet_ready = function() {
+	};
+</script>
+
+
+	<div id="lg-attribution">
+		Data: <a href="https://landgov.donorplatform.org/" target="_blank" rel="noopener">Land governance programme map</a>,
+		Global Donor Platform for Rural Development / Global Donor Working Group on Land (snapshot of 1 November 2026) &middot;
+		Map &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors
+	</div>
+</body>

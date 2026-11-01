@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="30px" height="35px" viewBox="0 0 30 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.8.3 (29802) - http://www.bohemiancoding.com/sketch -->
+    <title>Pin klein gruen</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M15.0001383,7.00000014 C18.6326657,6.99949039 21.9796966,9.05154213 23.7429965,12.3602128 C25.5062963,15.6688836 25.4084364,19.7136034 23.4873743,22.9255209 C21.7216373,25.8723959 15.0001383,32 15.0001383,32 C15.0001383,32 8.27164047,25.8682292 6.50640338,22.9151042 C4.59006046,19.7026534 4.49571693,15.6604126 6.25993031,12.3547243 C8.02414369,9.04903613 11.3696698,6.9993859 15.0001383,7.00000014 L15.0001383,7.00000014 Z" id="path-1"></path>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="-2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.153362772 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <mask id="mask-3" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="20" height="25" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Pin-klein-gruen">
+            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+            <use stroke-opacity="0.396314538" stroke="#000000" mask="url(#mask-3)" stroke-width="2" fill="#178508" fill-rule="evenodd" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>
